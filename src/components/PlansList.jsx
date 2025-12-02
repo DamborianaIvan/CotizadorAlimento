@@ -1,6 +1,10 @@
+// src/components/PlansList.jsx
 import PlanCard from "./PlanCard";
+import { usePetFood } from "../context/PetFoodContext";
 
-export default function PlansList({ plans, petName }) {
+export default function PlansList() {
+  const { plans, petName } = usePetFood();
+
   if (!plans || plans.length === 0) {
     return (
       <section className="bg-white rounded-2xl shadow-sm border border-dashed border-slate-300 p-4 md:p-5 flex items-center justify-center min-h-[180px]">

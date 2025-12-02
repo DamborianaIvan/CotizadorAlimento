@@ -1,4 +1,6 @@
+// src/components/PetForm.jsx
 import { useState } from "react";
+import { usePetFood } from "../context/PetFoodContext";
 
 const initialForm = {
   petName: "",
@@ -10,21 +12,18 @@ const initialForm = {
   bodyCondition: "normal",
 };
 
-export default function PetForm({ onCalculate,onFullReset }) {
+export default function PetForm() {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
+  const { handleCalculate, handleFullReset } = usePetFood();
 
   const validate = () => {
     const newErrors = {};
 
-    if (!form.petName.trim()) {
-      newErrors.petName = "El nombre es obligatorio.";
-    }
-    if (!form.weight) {
-      newErrors.weight = "El peso es obligatorio.";
-    } else if (Number(form.weight) <= 0) {
+    if (!form.petName.trim()) newErrors.petName = "El nombre es obligatorio.";
+    if (!form.weight) newErrors.weight = "El peso es obligatorio.";
+    else if (Number(form.weight) <= 0)
       newErrors.weight = "El peso debe ser mayor a 0.";
-    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -32,13 +31,10 @@ export default function PetForm({ onCalculate,onFullReset }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
 
@@ -52,19 +48,19 @@ export default function PetForm({ onCalculate,onFullReset }) {
       bodyCondition: form.bodyCondition,
     };
 
-    onCalculate(payload);
+    handleCalculate(payload);
   };
 
-const handleFullResetClick = () => {
-  setForm(initialForm);
-  setErrors({});
-  onFullReset();   // 🔥 ESTA ES LA PARTE QUE QUITA EL WARNING Y LIMPIA TODO
-};
+  const handleFullResetClick = () => {
+    setForm(initialForm);
+    setErrors({});
+    handleFullReset();
+  };
 
   return (
     <form
       className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 md:p-5 space-y-4"
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
     >
       <div className="flex items-center justify-between gap-2">
         <h2 className="text-lg font-semibold text-slate-800">
@@ -201,7 +197,7 @@ const handleFullResetClick = () => {
       </div>
 
       {/* Botones */}
-      <div className="flex flex-wrap gap-2 justify-end pt-2">
+       <div className="flex flex-wrap gap-2 justify-end pt-2">
         <button
           type="button"
           onClick={handleFullResetClick}
@@ -209,7 +205,6 @@ const handleFullResetClick = () => {
         >
           Limpiar
         </button>
-
         <button
           type="submit"
           className="rounded-full bg-indigo-600 px-5 py-1.5 text-sm font-semibold text-white shadow hover:bg-indigo-700 transition"

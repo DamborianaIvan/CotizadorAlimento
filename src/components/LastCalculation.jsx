@@ -1,4 +1,7 @@
-export default function LastCalculation({ lastCalc }) {
+import { usePetFood } from "../context/PetFoodContext";
+
+export default function LastCalculation() {
+  const { lastCalc } = usePetFood();
   if (!lastCalc) return null;
 
   const fecha = new Date(lastCalc.date);

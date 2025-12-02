@@ -1,4 +1,9 @@
-export default function ComparisonTable({ plans }) {
+// src/components/ComparisonTable.jsx
+import { usePetFood } from "../context/PetFoodContext";
+
+export default function ComparisonTable() {
+  const { plans } = usePetFood();
+
   if (!plans || plans.length === 0) return null;
 
   return (
