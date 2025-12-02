@@ -18,3 +18,5 @@ Para verificar que están instalados, podés usar:
 ```bash
 node -v
 npm -v
+
+## Levanta APP localmente
